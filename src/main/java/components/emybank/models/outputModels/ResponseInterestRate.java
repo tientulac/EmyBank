@@ -1,6 +1,5 @@
 package components.emybank.models.outputModels;
-
-import components.emybank.models.inputModels.Bank;
+import components.emybank.models.inputModels.InterestRate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
-public class ResponseBank extends ResponseBase{
-    public List<Bank> Data;
+public class ResponseInterestRate extends ResponseBase {
+    public List<InterestRate> Data;
 }

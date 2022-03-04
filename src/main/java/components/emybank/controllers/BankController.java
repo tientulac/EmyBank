@@ -29,7 +29,7 @@ public class BankController {
             res.Message = "Success !";
             res.Limit = limit;
             res.Page = page;
-            res.listBank = listBank;
+            res.Data = listBank;
         }
         catch (Exception ex) {
             res.Status = StatusID.InternalServer.ordinal();

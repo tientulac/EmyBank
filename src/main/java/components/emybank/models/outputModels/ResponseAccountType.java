@@ -1,6 +1,6 @@
 package components.emybank.models.outputModels;
 
-import components.emybank.models.inputModels.Bank;
+import components.emybank.models.inputModels.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 
-public class ResponseBank extends ResponseBase{
-    public List<Bank> Data;
+public class ResponseAccountType extends ResponseBase {
+    public List<AccountType> Data;
 }
