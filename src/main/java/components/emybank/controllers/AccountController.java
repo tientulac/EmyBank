@@ -2,10 +2,9 @@ package components.emybank.controllers;
 
 import components.emybank.models.dtos.AccountDTO;
 import components.emybank.models.inputModels.Account;
-import components.emybank.models.outputModels.ResponseBase;
-import components.emybank.models.outputModels.ResponseLogin;
-import components.emybank.models.outputModels.StatusID;
-import components.emybank.models.outputModels.UserInfo;
+import components.emybank.models.inputModels.InterestRate;
+import components.emybank.models.inputModels.Loan;
+import components.emybank.models.outputModels.*;
 import components.emybank.services.account.AccountService;
 import components.emybank.services.accountType.AccountTypeService;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -39,6 +39,26 @@ public class AccountController {
         return doGenerateToken(claims, userInfo.getUserName());
     }
 
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseListAccount getList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit) {
+        ResponseListAccount res = new ResponseListAccount();
+        try {
+            List<Account> listAccount = accountService.findAll();
+            res.Status = StatusID.Success.ordinal();
+            res.Message = "Success !";
+            res.Limit = limit;
+            res.Page = page;
+            res.Data = listAccount;
+        }
+        catch (Exception ex) {
+            res.Status = StatusID.InternalServer.ordinal();
+            res.Message = ex.getMessage();
+        }
+        return res;
+    }
 
     public String getAccountTypeName(int accountType_id) {
         if (accountType_id > 0) {
@@ -94,6 +114,7 @@ public class AccountController {
                 Info.setAccountType_name(getAccountTypeName(_account.getAccountType_id()));
                 res.setUserInfo(Info);
                 res.setToken(generateToken(Info));
+                System.out.println(Info.getTotalAmount());
             }
             else {
                 res.Status = StatusID.InternalServer.ordinal();
@@ -102,6 +123,28 @@ public class AccountController {
         }
         catch (Exception ex) {
             System.out.println(ex);
+            res.Status = StatusID.InternalServer.ordinal();
+            res.Message = ex.getMessage();
+        }
+        return  res;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
+    public ResponseAccount getById(@PathVariable int id) {
+        ResponseAccount res = new ResponseAccount();
+        try {
+            Account account = accountService.findById(id);
+            if (account != null) {
+                res.Status = StatusID.Success.ordinal();
+                res.Message = "Success !";
+                res.setData(account);
+            }
+            else {
+                res.Status = StatusID.InternalServer.ordinal();
+                res.Message = "This type doesnt have this id !";
+            }
+        }
+        catch (Exception ex) {
             res.Status = StatusID.InternalServer.ordinal();
             res.Message = ex.getMessage();
         }

@@ -1,10 +1,8 @@
 package components.emybank.controllers;
 
 import components.emybank.models.inputModels.InterestRate;
-import components.emybank.models.inputModels.Loan;
 import components.emybank.models.outputModels.ResponseBase;
 import components.emybank.models.outputModels.ResponseInterestRate;
-import components.emybank.models.outputModels.ResponseLoan;
 import components.emybank.models.outputModels.StatusID;
 import components.emybank.services.interestRate.InterestRateService;
 import org.springframework.beans.factory.annotation.Autowired;

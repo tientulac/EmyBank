@@ -29,6 +29,10 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/*").permitAll()
                 .antMatchers("/api/v1/account/*").permitAll()
                 .antMatchers("/api/v1/accountType/*").permitAll()
+                .antMatchers("/api/v1/loan/account/*").permitAll()
+                .antMatchers("/api/v1/transaction/*").permitAll()
+                .antMatchers("/api/v1/transaction/excel").permitAll()
+                .antMatchers("/api/v1/loan/excel").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable().httpBasic();
     }

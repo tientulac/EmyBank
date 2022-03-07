@@ -1,5 +1,6 @@
 package components.emybank.controllers;
 
+import components.emybank.ExcelExport.TransactionExcelExporter;
 import components.emybank.models.inputModels.Account;
 import components.emybank.models.inputModels.Transaction;
 import components.emybank.models.outputModels.ResponseBase;
@@ -10,6 +11,10 @@ import components.emybank.services.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -70,9 +75,10 @@ public class TransactionController {
         try {
             if (transaction != null) {
                 Account from_account = accountService.findById(transaction.getFrom_account());
-                Account to_account = accountService.findById(transaction.getTo_account());
+                Account to_account = accountService.findByName(transaction.getTo_account());
                 double extraMoney = from_account.getTotalAmount() - transaction.getAmount();
                 if (extraMoney >= 0) {
+                    System.out.println(to_account.getTotalAmount());
                     double lostMoney = to_account.getTotalAmount() + transaction.getAmount();
                     from_account.setTotalAmount(extraMoney);
                     to_account.setTotalAmount(lostMoney);
@@ -80,6 +86,7 @@ public class TransactionController {
                     transactionService.deposit(transaction);
                     accountService.updateOne(from_account);
                     accountService.updateOne(to_account);
+                    System.out.println(lostMoney);
                     res.Status = StatusID.Success.ordinal();
                     res.Message = "Success !";
                 }
@@ -98,5 +105,19 @@ public class TransactionController {
             res.Message = ex.getMessage();
         }
         return  res;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=Transaction.xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<Transaction> listTrans = transactionService.findAll();
+
+        TransactionExcelExporter excelExporter = new TransactionExcelExporter(listTrans);
+
+        excelExporter.export(response);
     }
 }

@@ -29,7 +29,7 @@ public class InterestRate {
     private int year;
 
     @Column(name = "rate")
-    private int rate;
+    private double rate;
 
     @Column(name = "description")
     private String description;

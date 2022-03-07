@@ -1,7 +1,6 @@
 package components.emybank.services.interestRate;
 
 import components.emybank.models.inputModels.InterestRate;
-import components.emybank.models.inputModels.Loan;
 import components.emybank.repositories.InterestRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

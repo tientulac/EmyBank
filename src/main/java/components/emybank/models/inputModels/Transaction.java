@@ -30,10 +30,6 @@ public class Transaction {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "createdAt")
-    @CreationTimestamp
-    private Date createdAt;
-
     @Column(name = "amount")
     private double amount;
 
@@ -41,5 +37,9 @@ public class Transaction {
     private int from_account;
 
     @Column(name = "to_account")
-    private int to_account;
+    private String to_account;
+
+    @Column(name = "createdAt")
+    @CreationTimestamp
+    private Date createdAt;
 }

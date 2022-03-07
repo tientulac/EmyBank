@@ -1,6 +1,5 @@
 package components.emybank.services.loan;
 
-import components.emybank.models.inputModels.Bank;
 import components.emybank.models.inputModels.Loan;
 
 import java.util.List;

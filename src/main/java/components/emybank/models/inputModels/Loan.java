@@ -25,8 +25,8 @@ public class Loan {
     @Column(name = "object")
     private String object;
 
-    @Column(name = "limit")
-    private double limit;
+    @Column(name = "limited")
+    private double limited;
 
     @Column(name = "rate_id")
     private int rate_id;
@@ -36,6 +36,9 @@ public class Loan {
 
     @Column(name = "formality")
     private String formality;
+
+    @Column(name = "amount")
+    private double amount;
 
     @Column(name = "account_id")
     private int account_id;

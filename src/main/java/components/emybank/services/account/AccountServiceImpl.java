@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AccountServiceImpl  implements AccountService{
@@ -21,12 +22,17 @@ public class AccountServiceImpl  implements AccountService{
         return hashPassword;
     }
 
+    public boolean doPasswordsMatch(String rawPassword,String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
     @Override
     public Account login(Account account) {
         String password = encodePassword(account.getPassword());
-        Account result = accountRepository.findAccountByUserNameAndPassword(account.getUserName(), password);
-        if (result != null) {
-            return result;
+        boolean result = doPasswordsMatch(account.getPassword(), password);
+        if (result) {
+           Account result_login = accountRepository.findAccountByUserName(account.getUserName());
+           return result_login;
         }
         else {
             return null;
@@ -41,6 +47,18 @@ public class AccountServiceImpl  implements AccountService{
     @Override
     public Account updateOne(Account account) {
         return accountRepository.save(account);
+    }
+
+    @Override
+    public List<Account> findAll() {
+        return accountRepository.findAll();
+    }
+
+    @Override
+    public Account findByName(String userName) {
+        System.out.println(userName);
+        System.out.println(accountRepository.findAccountByUserName(userName).getFullName());
+        return accountRepository.findAccountByUserName(userName);
     }
 
     @Override
